@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Routes, Route, Navigate} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/login';
 import Register from './components/register';
 import Home from './components/home';
@@ -19,7 +19,7 @@ const App = () => {
         <Route path="/todos" element={<PrivateRoute><Todos /></PrivateRoute>} />
         <Route path="/posts" element={<PrivateRoute><Posts /></PrivateRoute>} />
         <Route path="/albums" element={<PrivateRoute><Albums /></PrivateRoute>} />
-        {/* <Route path="*" element={<Navigate to="/login" />} /> */}
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
   );

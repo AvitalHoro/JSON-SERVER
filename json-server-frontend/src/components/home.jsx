@@ -13,11 +13,11 @@ const Home = () => {
   return (
     <div>
       <header>
-        <h1>Welcome, {user.fullName}</h1>
+        <h1>Welcome, {user.username}</h1>
         <nav>
-          <Link to="/info">Info</Link>
-          <Link to="/todos">Todos</Link>
-          <Link to="/posts">Posts</Link>
+          <Link to="/info">Info </Link>
+          <Link to="/todos">Todos </Link>
+          <Link to="/posts">Posts </Link>
           <Link to="/albums">Albums</Link>
           <button onClick={handleLogout}>Logout</button>
         </nav>
