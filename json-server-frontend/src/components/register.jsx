@@ -15,10 +15,19 @@ const Register = () => {
       return;
     }
 
-    const newUser = { username, password, fullName: 'New User' }; // Replace with real server call
+    // Add a new user
+    fetch('http://localhost:3000/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ "username": username, "website": password }),
+    })
+      .then(response => response.json())
+      .then(user => {console.log('User added:', user); localStorage.setItem('user', JSON.stringify(user));});
 
-    // Save user details and redirect
-    localStorage.setItem('user', JSON.stringify(newUser));
+    // Clear the form
+    setUsername('');
+    setPassword('');
+
     navigate('/home');
   };
 
