@@ -18,7 +18,7 @@ const Home = () => {
           <Link to="/info">Info </Link>
           <Link to="/todos">Todos </Link>
           <Link to="/posts">Posts </Link>
-          <Link to="/albums">Albums</Link>
+          <Link to="/albums">Albums </Link>
           <button onClick={handleLogout}>Logout</button>
         </nav>
       </header>
