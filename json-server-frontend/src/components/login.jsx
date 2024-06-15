@@ -76,6 +76,6 @@ const Login = () => {
       <div>Do not have an account? <a href="/register">Register</a></div>
     </div>
   );
-}
+};
 
 export default Login;

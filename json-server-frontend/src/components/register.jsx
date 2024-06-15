@@ -15,20 +15,32 @@ const Register = () => {
       return;
     }
 
+    const response = await fetch(`http://localhost:3000/users?username=${username}`);
+      const users = await response.json();
+      console.log("registerUser:",users);
+      if(users.length > 0)
+        {
+          setError('User already exists');
+          return;
+        }
+
     // Add a new user
-    fetch('http://localhost:3000/users', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ "username": username, "website": password }),
-    })
-      .then(response => response.json())
-      .then(user => {console.log('User added:', user); localStorage.setItem('user', JSON.stringify(user));});
+    // fetch('http://localhost:3000/users', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ "username": username, "website": password }),
+    // })
+    //   .then(response => response.json())
+    //   .then(user => {console.log('User added:', user); localStorage.setItem('user', JSON.stringify(user));});
+
+    // Save user details and redirect
+    localStorage.setItem('tempRegisterUser', JSON.stringify({ "username": username, "website": password }));
 
     // Clear the form
     setUsername('');
     setPassword('');
 
-    navigate('/home');
+    navigate('/completion_of_details');
   };
 
   return (
@@ -55,7 +67,8 @@ const Register = () => {
         />
         <button type="submit">Register</button>
       </form>
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <div>Do you have an account? <a href="/login">Login</a></div>
     </div>
   );
 };
