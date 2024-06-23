@@ -1,3 +1,4 @@
+// src/pages/PostDetails.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Comments from './comments';
@@ -11,7 +12,6 @@ const PostDetails = () => {
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const [currentUser, setCurrentUser] = useState({ id: CURRENT_USER_ID, name: 'User 1' });
 
   useEffect(() => {
     async function fetchPostAndComments() {
@@ -103,7 +103,6 @@ const PostDetails = () => {
             onUpdateComment={handleUpdateComment}
             newComment={newComment}
             setNewComment={setNewComment}
-            currentUser={currentUser}
           />
         </>
       )}
