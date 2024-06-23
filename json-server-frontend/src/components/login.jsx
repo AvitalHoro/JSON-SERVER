@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
 
-const Login = () => {
+const Login = ( {setUser} ) => {
 
   const navigate = useNavigate();
 
@@ -34,9 +35,10 @@ const Login = () => {
           console.log('Login successful');
           userIsExist=false;
           localStorage.setItem('user', JSON.stringify(currentUser));
+          setUser(currentUser);
           navigate('/home');
 
-          console.log('Login successful2');
+          console.log('Login successful finished');
         } else {
           setErrorMessage('Incorrect password');
         }
@@ -50,30 +52,35 @@ const Login = () => {
     <div>
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+          
+        }}>
+          <TextField
+          id='username'
+            label="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
+          <TextField
+          id='password'
+            label="password"
             type="password"
-            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
+
         <button type="submit">Login</button>
+        <div>Do not have an account? <a href="/register">Register</a></div>
+
+        </div>
+
       </form>
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <div>Do not have an account? <a href="/register">Register</a></div>
     </div>
   );
 };

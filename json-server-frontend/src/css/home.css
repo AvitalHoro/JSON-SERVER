@@ -1,0 +1,163 @@
+.typewriter h1 {
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid orange; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .15em; /* Adjust as needed */
+    animation: 
+      typing 3.5s steps(40, end),
+      blink-caret .75s step-end infinite;
+  }
+  
+  /* The typing effect */
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange; }
+  }
+
+
+
+
+
+  /* Typewriter text styling */
+.typewriter-text {
+    font-size: 2em;  /* Make the text bigger */
+    color: #ff5733;  /* Set the text color */
+    letter-spacing: 0.1em;  /* Adjust the space between letters */
+    width: 50%;
+    animation: colorChange 3s infinite;  /* Apply color changing animation */
+
+  }
+  
+  /* Cursor (marker) styling */
+  .typewriter-cursor {
+    font-size: 2em;  /* Match the text size */
+    color: #ff5733;  /* Match the text color */
+    animation: blink 0.7s infinite;  /* Blink effect */
+  }
+
+  .typewriter-container {
+    width: 300px;  /* Set the fixed width you want */
+    overflow-wrap: break-word;  /* Ensure text wraps within the container */
+    word-wrap: break-word;  /* Ensure text wraps within the container */
+    white-space: pre-wrap;  /* Preserve white spaces and ensure text wraps */
+    height: 200px;
+  }
+  
+  @keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+  
+  @keyframes colorChange {
+    0% {
+      color: #ff5733;  /* Color 1 */
+    }
+    33% {
+      color: #33ff57;  /* Color 2 */
+    }
+    66% {
+      color: #3357ff;  /* Color 3 */
+    }
+    100% {
+      color: #ff5733;  /* Color 1 (repeat) */
+    }
+  }
+
+  /* Pop-up container styling */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);  /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;  /* Ensure it appears above all other content */
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* Pop-up content styling */
+  .popup-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60%;
+    width: 40%;
+    background: #F6DE5C;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Floating effect with shadow */
+    animation: slideDown 0.3s ease-in-out;
+  }
+  
+  /* Fade-in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Slide-down animation */
+  @keyframes slideDown {
+    from {
+      transform: translateY(-20px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  /* Fade-out animation */
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  /* Slide-up animation */
+  @keyframes slideUp {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-20px);
+    }
+  }
+  
+  /* Pop-up overlay hidden state */
+  .popup-overlay.hidden {
+    animation: fadeOut 0.3s ease-in-out;
+    animation-fill-mode: forwards;
+  }
+  
+  /* Pop-up content hidden state */
+  .popup-content.hidden {
+    animation: slideUp 0.3s ease-in-out;
+    animation-fill-mode: forwards;
+  }
+  
+  .back-img {
+    background-image: url('../../public/img/background.png'); /* Replace with the path to your image */
+  background-size: cover; /* Cover the entire component */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Prevent repeating the image */
+  }

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TextField } from '@mui/material';
+import useStyles from './style';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -7,6 +9,8 @@ const Register = () => {
   const [passwordVerify, setPasswordVerify] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  const classes = useStyles();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,28 +51,41 @@ const Register = () => {
     <div>
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
-        <input
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+        }}>
+        <TextField
+        style={{fontFamily: 'Figtree'}}
+        className={classes.customTextField}
           type="text"
+          label="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
+          required
         />
-        <input
+        <TextField
           type="password"
+          label="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          required
         />
-        <input
+        <TextField
           type="password"
+          label="Verify Password"
           value={passwordVerify}
           onChange={(e) => setPasswordVerify(e.target.value)}
-          placeholder="Verify Password"
+          required
         />
+       
         <button type="submit">Register</button>
+        <div>Do you have an account? <a href="/login">Login</a></div>
+
+        </div>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <div>Do you have an account? <a href="/login">Login</a></div>
     </div>
   );
 };

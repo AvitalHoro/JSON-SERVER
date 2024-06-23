@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import TodoForm from '../components/todoForm';
+import { Button, Menu, MenuItem } from '@mui/material';
+import FilterAltIcon from '@mui/icons-material/FilterList';
+
 
 //-------------------Define API URL-----------------------------------------
 const API_URL = 'http://localhost:3000/todos';
-const CURRENT_USER = JSON.parse(localStorage.getItem('user'));
-const CURRENT_USER_ID = CURRENT_USER.id;
 
 //-------------------Todo Component------------------------------------------
 
-const Todos = () => {
+const Todos = ({ user }) => {
+
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState('serial');
   const [search, setSearch] = useState('');
@@ -16,6 +18,7 @@ const Todos = () => {
   const [searchExecution, setSearchExecution] = useState('all');
   const [editingId, setEditingId] = useState(null);
   const [editingTitle, setEditingTitle] = useState('');
+  
 
 
 //-------------------Fetch todos from the API for the current user-------------
@@ -24,7 +27,7 @@ const Todos = () => {
       try {
         const response = await fetch(API_URL);
         const data = await response.json();
-        const userTodos = data.filter(todo => todo.userId === CURRENT_USER_ID);
+        const userTodos = data.filter(todo => todo.userId === user.id);
         setTodos(userTodos.slice(0, 20));
       } catch (error) {
         console.error('Error fetching todos:', error);
@@ -42,7 +45,7 @@ const Todos = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...newTodo, userId: CURRENT_USER_ID }),
+        body: JSON.stringify({ ...newTodo, userId: user.id }),
       });
 
       if (!response.ok) {
@@ -99,6 +102,58 @@ const Todos = () => {
     }
   };
 
+
+//-------------------Filter Menu---------------------------------------------------
+
+  const FilterMenu = () => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [filter, setFilter] = useState('serial');
+  
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+  
+    const handleMenuItemClick = (value) => {
+      setFilter(value);
+      handleClose();
+    };
+  
+    return (
+      <div>
+        <Button
+          variant="contained"
+          startIcon={<FilterAltIcon />}
+          onClick={handleClick}
+        >
+          Filter
+        </Button>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={() => handleMenuItemClick('serial')} selected={filter === 'serial'}>
+            Serial
+          </MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick('alphabetical')} selected={filter === 'alphabetical'}>
+            Alphabetical
+          </MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick('performance')} selected={filter === 'performance'}>
+            Performance
+          </MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick('random')} selected={filter === 'random'}>
+            Random
+          </MenuItem>
+        </Menu>
+        <p>Selected filter: {filter}</p>
+      </div>
+    );
+  };
+
   
 //-------------------Filter and sort todos------------------------------------------
   const filteredTodos = todos
@@ -124,46 +179,61 @@ const Todos = () => {
       return 0;
     });
 
+
+    //-------------------todos Filters------------------------------------------
+
+    const TodoFilters = () => (      <div>
+      <label>
+        <FilterMenu/>
+    
+        Filter:
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="serial">Serial</option>
+          <option value="alphabetical">Alphabetical</option>
+          <option value="performance">Performance</option>
+          <option value="random">Random</option>
+        </select>
+      </label>
+      <label>
+        Search by:
+        <select value={searchCriteria} onChange={(e) => setSearchCriteria(e.target.value)}>
+          <option value="serial">Serial Number</option>
+          <option value="title">Title</option>
+          <option value="execution">Execution Status</option>
+        </select>
+      </label>
+      {searchCriteria !== 'execution' ? (
+        <input
+          type="text"
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      ) : (
+        <select
+          value={searchExecution}
+          onChange={(e) => setSearchExecution(e.target.value)}
+        >
+          <option value="all">All</option>
+          <option value="completed">Completed</option>
+          <option value="not_completed">Not Completed</option>
+        </select>
+      )}
+    </div>);
+
   return (
-    <div>
+    <div style={
+      {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'start',
+        alignItems: 'center',
+      }
+    }>
       <h1>Todos</h1>
-      <TodoForm onAddTodo={handleAddTodo} />
-      <div>
-        <label>
-          Filter:
-          <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-            <option value="serial">Serial</option>
-            <option value="alphabetical">Alphabetical</option>
-            <option value="performance">Performance</option>
-            <option value="random">Random</option>
-          </select>
-        </label>
-        <label>
-          Search by:
-          <select value={searchCriteria} onChange={(e) => setSearchCriteria(e.target.value)}>
-            <option value="serial">Serial Number</option>
-            <option value="title">Title</option>
-            <option value="execution">Execution Status</option>
-          </select>
-        </label>
-        {searchCriteria !== 'execution' ? (
-          <input
-            type="text"
-            placeholder="Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        ) : (
-          <select
-            value={searchExecution}
-            onChange={(e) => setSearchExecution(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="completed">Completed</option>
-            <option value="not_completed">Not Completed</option>
-          </select>
-        )}
-      </div>
+      <TodoFilters></TodoFilters>
       <ul>
         {filteredTodos.map(todo => (
           <li key={todo.id}>
@@ -198,6 +268,8 @@ const Todos = () => {
           </li>
         ))}
       </ul>
+      <TodoForm onAddTodo={handleAddTodo} />
+
     </div>
   );
 };

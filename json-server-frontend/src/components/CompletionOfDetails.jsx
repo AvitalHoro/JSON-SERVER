@@ -1,7 +1,8 @@
 import {React, useState} from "react";
 import { useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
 
-const CompletionOfDetails = () => 
+const CompletionOfDetails = ({ setUser }) => 
 {
 
     const [Fullname, setFullname] = useState("");
@@ -67,6 +68,7 @@ const CompletionOfDetails = () =>
         .then(user => {
             console.log('User added:', user); 
             localStorage.setItem('user', JSON.stringify(user));
+            setUser(user)
             navigate('/home');
         })
         .catch(error => {
@@ -91,57 +93,83 @@ const CompletionOfDetails = () =>
         <div>
             <h2>Complete your details to continue</h2>
             <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={Fullname}
-          onChange={(e) => setFullname(e.target.value)}
-          placeholder="Full name"
-        />
-        <input
-          type="email"
-          value={Email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        <div>Adress:</div>
-        <input
-          type="text"
-          value={Street}
-          onChange={(e) => setStreet(e.target.value)}
-          placeholder="Street"
-        />
-        <input
-          type="text"
-          value={Suite}
-          onChange={(e) => setSuite(e.target.value)}
-          placeholder="Suite"
-        />
-        <input
-          type="text"
-          value={City}
-          onChange={(e) => setCity(e.target.value)}
-          placeholder="City"
-        />
-        <input
-          type="text"
-          value={Zipcode}
-          onChange={(e) => setZipcode(e.target.value)}
-          placeholder="Zipcode"
-        />
-        <input
-            type="text"
-            value={Phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Phone"
-        />
-        <input
-          type="text"
-          value={CompanyName}
-          onChange={(e) => setCompanyName(e.target.value)}
-          placeholder="company name"
-        />
+            <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '30px',
+          alignItems: 'center',
+          margin: '20px',
+          }}>
+              <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+          marginTop: '34px',
+              }}>
+              <TextField
+                type="text"
+                label="Full name"
+                value={Fullname}
+                onChange={(e) => setFullname(e.target.value)}
+                required
+              />
+              <TextField
+                type="email"
+                label="Email"
+                value={Email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <TextField
+                type="text"
+                label="Phone"
+                value={Phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+              
+              <TextField
+                type="text"
+                label="Company Name"
+                value={CompanyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+              />
+              </div>
+              <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+              }}>
+              <div>Address:</div>
+              <TextField
+                type="text"
+                label="Street"
+                value={Street}
+                onChange={(e) => setStreet(e.target.value)}
+              />
+              <TextField
+                type="text"
+                label="Suite"
+                value={Suite}
+                onChange={(e) => setSuite(e.target.value)}
+              />
+              <TextField
+                type="text"
+                label="City"
+                value={City}
+                onChange={(e) => setCity(e.target.value)}
+              />
+              <TextField
+                type="text"
+                label="Zipcode"
+                value={Zipcode}
+                onChange={(e) => setZipcode(e.target.value)}
+              />
+              </div>  
 
+        </div>
         <button type="submit">Finished</button>
+
       </form>
         {error && <p>{error}</p>}
         </div>
