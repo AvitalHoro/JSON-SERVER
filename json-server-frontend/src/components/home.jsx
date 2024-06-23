@@ -1,42 +1,60 @@
-import { React, useState } from 'react';
+import  React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Info from './info';
+import '../css/home.css';
+import Typewriter from 'typewriter-effect';
 
-const Home = () => {
+
+const Home = ( { user, setUser, InfoVisible, handleInfo }) => {
+
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user'));
-  const [InfoVisible, setInfoVisible] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('user');
+    setUser(null);
     navigate('/login');
   };
 
-  const handleInfo = () => {
-    setInfoVisible(!InfoVisible);
-  };
 
+
+  const bigUserName = user.username? user.username.toUpperCase(): '?';
 
   return (
-    <div>
-      <div style={{display: InfoVisible? "block": "none" }}>
-        <div>
-      <Info></Info>
+    <div className='back-img' style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+      <div className='popup-overlay' style={{display: InfoVisible? "flex": "none" }}>
+        <div className='popup-content'>
+      <Info user={user} handleInfo={handleInfo}></Info>
       </div>
       </div>
+      <button className='upper-right-corner' style={{display: 'flex', flexDirection: 'column', alignItems: 
+          'center', justifyContent: 'center'}} onClick={handleLogout}>
+            <img style={{width: '40px'}} src='./img/logout.png' alt='' />
+            Logout</button>
       <header>
-        <h1>Welcome, {user.username}</h1>
+        <h1>Welcome, {user.username}!</h1>
+
         <nav>
-          <Link onClick={handleInfo}>Info </Link>
+          {/* <Link onClick={handleInfo}>Info </Link>
           <Link to="/todos">Todos </Link>
           <Link to="/posts">Posts </Link>
-          <Link to="/albums">Albums </Link>
-          <button onClick={handleLogout}>Logout</button>
+          <Link to="/albums">Albums </Link> */}
+
         </nav>
       </header>
-      <main>
-        <p>This is the home page content.</p>
-      </main>
+      <main style={{display: 'flex', alignContent: 'center', justifyContent: 'center'}}>
+        <div className='typewriter-container'>
+      <Typewriter
+  options={{
+    strings: [`GLAD YOU CAME!`, 'WHAT DO YOU WANT TO DO TODAY?'],
+    autoStart: true,
+    loop: true,
+     wrapperClassName: 'typewriter-text',
+    cursorClassName: 'typewriter-cursor'
+  }}
+  
+/> 
+</div>
+    </main>
     </div>
   );
 };

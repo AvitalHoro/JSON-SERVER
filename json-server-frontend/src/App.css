@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0;
   text-align: center;
+  width: 100%;
 }
 
 .logo {
@@ -39,4 +41,26 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.main-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.upper-right-corner {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 10px; /* Optional: Add some margin for spacing */
+  z-index: 1000; /* Ensure it appears above other content if necessary */
 }
