@@ -121,7 +121,7 @@ const FilterMenu = () => {
   };
 
   return (
-    <div>
+    <div style={{zIndex: "100"}}>
       <Menu>
         <MenuButton px={12} py={8} as={Button} rightIcon={<ChevronDownIcon />}>
         <Flex align="center">
@@ -156,7 +156,7 @@ const SearchMenu = ({}) => {
   };
 
   return (
-    <div>
+    <div style={{zIndex: "100"}}>
       <Menu>
         <MenuButton px={12} py={8} as={Button} rightIcon={<ChevronDownIcon />}>
         <Flex align="center">
@@ -212,7 +212,7 @@ const SearchMenu = ({}) => {
 
     const TodoFilters = () => (      
     
-    <div>
+    <div  style={{zIndex: "100"}}>
         <div style={{
           display: 'flex',
           flexDirection: 'row',
