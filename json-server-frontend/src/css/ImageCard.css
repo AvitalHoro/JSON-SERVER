@@ -1,0 +1,129 @@
+.image-card {
+    position: relative;
+    border-radius: 10px;
+    margin: 1%;
+}
+
+.image-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.image-card:hover {
+    transform: scale(1.1);
+    transition: transform 0.5s ease;
+}
+
+/* .shrinking {
+    animation: shrink 0.5s ease;
+}
+
+.growing {
+    animation: grow 0.5s ease;
+}
+
+@keyframes shrink {
+    from { transform: scale(1); }
+    to { transform: scale(0.6); }
+}
+
+@keyframes grow {
+    from { transform: scale(0.6); }
+    to { transform: scale(1.0); }
+} */
+
+
+.glowing-border {
+    border: 2px solid #dadada;
+    border-radius: 25px;
+}
+
+.glowing-border:focus { 
+  outline: none;
+  border-color: #9ecaed;
+  box-shadow: 0 0 10px #9ecaed;
+}
+
+  .photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    /* border-radius: 20px; */
+
+  }
+
+  .image-card:hover .photo-overlay {
+    opacity: 1;
+  }
+
+  .photo-overlay .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    text-align: center;
+  }
+
+  #cancel-btn, #confirm-btn {
+    cursor: pointer;
+    height: 10px;
+  }
+
+  select {
+      background-color: rgba(255, 255, 255, 0.4);
+      color: black;
+      width: 40px;
+      height: 10px;
+      text-align: center;
+      font-size: 11px;
+      cursor: pointer;
+      font-family: var(--body-font);
+      border-radius: 10px;
+  }
+
+  option {
+      text-align: center;
+      background-color:  rgba(255, 255, 255, 0.4);
+      color: black;
+      cursor: pointer;
+  }
+
+  /* h4 {
+      margin: -15px;
+  } */
+
+  .horizonal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.cancel-confirm-div {
+    gap: 20px;
+}
+
+.photo-title {
+    font-size: 12px;
+}
+
+.responsive-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }

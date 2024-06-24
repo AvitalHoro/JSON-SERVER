@@ -24,7 +24,7 @@ const Sidebar = ( { handleInfo } ) => {
       <img className="logo-img nav-link" src="/client/img/logo.png" alt="" />
       {sidebarOptions.map((option, index) => (
         <Link onClick={option.onClick} to={option.to}>
-        <div key={index} className="option nav-link">
+        <div className="option nav-link">
           <img src={option.imgSrc} alt="" />
           <span className="option-title">{option.title}</span>
         </div>

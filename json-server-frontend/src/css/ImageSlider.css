@@ -1,0 +1,76 @@
+.slider {
+    display: flex;
+    transition: transform 0.5s ease;
+    overflow: hidden;
+}
+
+.img-s-button {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 100%;
+    border: none;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0);
+    padding-left: 13px;
+}
+
+.img-s-button:focus {
+    outline: none;
+}
+
+.img-s-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+
+}
+
+.img-s-button img {
+    height: 80%;
+    object-fit: cover;
+}
+
+.shrinking {
+    animation: shrink 0.5s ease;
+}
+
+.growing {
+    animation: grow 0.5s ease;
+}
+
+@keyframes shrink {
+    from { opacity: 100%; transform: scale(1); }
+    to { opacity: 30%; transform: scale(0.6);}
+}
+
+@keyframes grow {
+    from { transform: scale(0.6); opacity: 20%; }
+    to { transform: scale(1); opacity: 100%;}
+}
+
+.selected {
+    background-color: #FDAA02;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .slider {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 400px;
+  }
+  
+  .image-card {
+    flex: 0 0 31%; /* Each image takes up 20% of the container width */
+    overflow: hidden;
+  }
+  
+  .image-card img {
+    width: 100%;
+    display: block;
+  }
+

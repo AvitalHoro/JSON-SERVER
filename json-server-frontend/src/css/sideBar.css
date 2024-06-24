@@ -19,9 +19,10 @@
 
 /**** DEFAULTS ****/
 
-
 .sidebar {
-    flex: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: var(--side-bar-width);
     height: 100vh;
     background-color: #F6F8FA;
@@ -30,7 +31,7 @@
     padding-top: 20px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
     z-index: 100;
-  }
+}
 
   .option {
     width: 150px;

@@ -49,6 +49,7 @@
 }
 
 .main-content {
+  min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -90,9 +91,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1em;
+  padding: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
   margin: 0.5em;
-  border-radius: 25px;
+  border-radius: 40px;
   background-color: #658DC2;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
@@ -119,7 +122,7 @@
 
 .todo-item {
   position: relative;
-  padding-top: 20px; /* Adjust this based on the size of the circle */
+  /* padding-top: 20px; Adjust this based on the size of the circle */
   margin: 20px 0;
   border: 1px solid #ddd;
   list-style: none;
@@ -178,4 +181,22 @@
   align-items: center;
   justify-content: center; */
   padding: 0;
+}
+
+.delete-button
+{
+  background-color: transparent;
+  border: none;
+}
+
+.delete-button:hover
+{
+  /* background-color: #ff5733; */
+  background-color: rgba(255, 87, 51, 0.5);
+}
+
+#popup-photos {
+  width: 450px;
+  height: 450px;
+  background-color: #f9f9f9;
 }
