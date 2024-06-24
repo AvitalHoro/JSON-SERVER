@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TodoForm from '../components/todoForm';
-// import { Button, Menu, MenuItem } from '@mui/material';
-// import FilterAltIcon from '@mui/icons-material/FilterList';
 import { Button, Menu, MenuButton, MenuList, MenuItem, Input, Select, Flex } from '@chakra-ui/react';
 import { ChevronDownIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons';
 import { FiFilter } from 'react-icons/fi';
@@ -23,8 +21,6 @@ const Todos = ({ user }) => {
   const [search, setSearch] = useState('');
   const [searchCriteria, setSearchCriteria] = useState('title');
   const [searchExecution, setSearchExecution] = useState('all');
-  const [editingId, setEditingId] = useState(null);
-  const [editingTitle, setEditingTitle] = useState('');
   
   console.log('re-render', search);
 

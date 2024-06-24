@@ -13,26 +13,31 @@
       "body": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
     },
     {
+      "userId": 1,
       "title": "Updated Title",
       "body": "Updated Body",
       "id": "3"
     },
     {
+      "userId": 1,
       "title": "Updated Title",
       "body": "Updated Body",
       "id": "4"
     },
     {
+      "userId": 1,
       "title": "Updated Title",
       "body": "Updated Body",
       "id": "5"
     },
     {
+      "userId": 1,
       "title": "Updated Title",
       "body": "Updated Body",
       "id": "6"
     },
     {
+      "userId": 1,
       "title": "Updated Title",
       "body": "Updated Body",
       "id": "7"
@@ -588,7 +593,6 @@
       "id": "100",
       "title": "at nam consequatur ea labore ea harum",
       "body": "cupiditate quo est a modi nesciunt soluta\nipsa voluptas error itaque dicta in\nautem qui minus magnam et distinctio eum\naccusamus ratione error aut"
-<<<<<<< HEAD
     },
     {
       "id": "12d8",
@@ -637,8 +641,18 @@
       "title": "hi",
       "body": "what?",
       "userId": "50b3"
-=======
->>>>>>> 0dea7ec1670f7e218dcde67de3e55860b83c9430
+    },
+    {
+      "id": "8ff3",
+      "title": "jk",
+      "body": "ng",
+      "userId": "f1f9"
+    },
+    {
+      "id": "7bd5",
+      "title": "nu",
+      "body": "bnm,",
+      "userId": "50b3"
     }
   ],
   "comments": [
@@ -41207,6 +41221,24 @@
       "title": "smile",
       "completed": false,
       "userId": "50b3"
+    },
+    {
+      "id": "2c47",
+      "title": "hi",
+      "completed": false,
+      "userId": "f1f9"
+    },
+    {
+      "id": "c95e",
+      "title": "bla",
+      "completed": false,
+      "userId": "f1f9"
+    },
+    {
+      "id": "8e01",
+      "title": "goodbay",
+      "completed": false,
+      "userId": "f1f9"
     }
   ]
 }

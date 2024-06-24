@@ -17,7 +17,7 @@ const PostDetails = (user) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-//-------------------Fetch post+comments from the API for the current user----------
+//-------------------Fetch post+comments from the API-------------------------------
   useEffect(() => {
     async function fetchPostAndComments() {
       try {
