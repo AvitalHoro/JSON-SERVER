@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TodoForm from '../components/todoForm';
-import { Button, Menu, MenuItem } from '@mui/material';
-import FilterAltIcon from '@mui/icons-material/FilterList';
+// import { Button, Menu, MenuItem } from '@mui/material';
+// import FilterAltIcon from '@mui/icons-material/FilterList';
+import { Button, Menu, MenuButton, MenuList, MenuItem, Input, Select, Flex } from '@chakra-ui/react';
+import { ChevronDownIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons';
+import { FiFilter } from 'react-icons/fi';
+import CheckBox from './CheckBox';
+import SearchInput from './SearchInput';
+import { color } from 'framer-motion';
 
 
 //-------------------Define API URL-----------------------------------------
@@ -11,6 +17,7 @@ const API_URL = 'http://localhost:3000/todos';
 
 const Todos = ({ user }) => {
 
+
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState('serial');
   const [search, setSearch] = useState('');
@@ -19,6 +26,8 @@ const Todos = ({ user }) => {
   const [editingId, setEditingId] = useState(null);
   const [editingTitle, setEditingTitle] = useState('');
   
+  console.log('re-render', search);
+
 
 
 //-------------------Fetch todos from the API for the current user-------------
@@ -105,54 +114,73 @@ const Todos = ({ user }) => {
 
 //-------------------Filter Menu---------------------------------------------------
 
-  const FilterMenu = () => {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [filter, setFilter] = useState('serial');
+const FilterMenu = () => {
   
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-  
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-  
-    const handleMenuItemClick = (value) => {
-      setFilter(value);
-      handleClose();
-    };
-  
-    return (
-      <div>
-        <Button
-          variant="contained"
-          startIcon={<FilterAltIcon />}
-          onClick={handleClick}
-        >
+  const handleMenuItemClick = (value) => {
+    setFilter(value);
+  };
+
+  return (
+    <div style={{zIndex: "100"}}>
+      <Menu>
+        <MenuButton px={12} py={8} as={Button} rightIcon={<ChevronDownIcon />}>
+        <Flex align="center">
+
+          <FiFilter mr={5} />
           Filter
-        </Button>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={() => handleMenuItemClick('serial')} selected={filter === 'serial'}>
+        </Flex>
+        </MenuButton>
+        <MenuList>
+          <MenuItem onClick={() => handleMenuItemClick('serial')} isSelected={filter === 'serial'}>
             Serial
           </MenuItem>
-          <MenuItem onClick={() => handleMenuItemClick('alphabetical')} selected={filter === 'alphabetical'}>
+          <MenuItem onClick={() => handleMenuItemClick('alphabetical')} isSelected={filter === 'alphabetical'}>
             Alphabetical
           </MenuItem>
-          <MenuItem onClick={() => handleMenuItemClick('performance')} selected={filter === 'performance'}>
+          <MenuItem onClick={() => handleMenuItemClick('performance')} isSelected={filter === 'performance'}>
             Performance
           </MenuItem>
-          <MenuItem onClick={() => handleMenuItemClick('random')} selected={filter === 'random'}>
+          <MenuItem onClick={() => handleMenuItemClick('random')} isSelected={filter === 'random'}>
             Random
           </MenuItem>
-        </Menu>
-        <p>Selected filter: {filter}</p>
-      </div>
-    );
+        </MenuList>
+      </Menu>
+    </div>
+  );
+};
+
+const SearchMenu = ({}) => {
+  
+  const handleMenuItemClick = (value) => {
+    setSearchCriteria(value);
   };
+
+  return (
+    <div style={{zIndex: "100"}}>
+      <Menu>
+        <MenuButton px={12} py={8} as={Button} rightIcon={<ChevronDownIcon />}>
+        <Flex align="center">
+
+          <Search2Icon mr={5} />
+          Search by
+        </Flex>
+        </MenuButton>
+        <MenuList>
+          <MenuItem onClick={() => handleMenuItemClick('serial')} isSelected={filter === 'serial'}>
+            Serial Number
+          </MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick('title')} isSelected={filter === 'title'}>
+          Title
+          </MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick('execution')} isSelected={filter === 'execution'}>
+          Execution Status
+          </MenuItem>
+        </MenuList>
+      </Menu>
+    </div>
+  );
+};
+
 
   
 //-------------------Filter and sort todos------------------------------------------
@@ -182,43 +210,41 @@ const Todos = ({ user }) => {
 
     //-------------------todos Filters------------------------------------------
 
-    const TodoFilters = () => (      <div>
-      <label>
-        <FilterMenu/>
+    const TodoFilters = () => (      
     
-        Filter:
-        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-          <option value="serial">Serial</option>
-          <option value="alphabetical">Alphabetical</option>
-          <option value="performance">Performance</option>
-          <option value="random">Random</option>
-        </select>
-      </label>
-      <label>
-        Search by:
-        <select value={searchCriteria} onChange={(e) => setSearchCriteria(e.target.value)}>
-          <option value="serial">Serial Number</option>
-          <option value="title">Title</option>
-          <option value="execution">Execution Status</option>
-        </select>
-      </label>
-      {searchCriteria !== 'execution' ? (
-        <input
-          type="text"
-          placeholder="Search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+    <div  style={{zIndex: "100"}}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '10px',
+        
+        }}>
+        <FilterMenu/>
+        <SearchMenu search={search} setSearch={setSearch}/>
+        {searchCriteria !== 'execution' ? (
+                <SearchInput search={search} setSearch={setSearch} /> 
+
       ) : (
-        <select
-          value={searchExecution}
-          onChange={(e) => setSearchExecution(e.target.value)}
-        >
-          <option value="all">All</option>
-          <option value="completed">Completed</option>
-          <option value="not_completed">Not Completed</option>
-        </select>
+        <Menu>
+        <MenuButton px={12} py={8} as={Button} rightIcon={<ChevronDownIcon />}>
+        <Flex align="center">
+          {searchExecution==='all' ? 'All' : searchExecution==='completed' ? 'Completed' : 'Not Completed'}
+        </Flex>
+        </MenuButton>
+        <MenuList>
+          <MenuItem onClick={() => setSearchExecution('all')} isSelected={filter === 'all'}>
+            All
+          </MenuItem>
+          <MenuItem onClick={() => setSearchExecution('completed')} isSelected={filter === 'completed'}>
+          Completed
+          </MenuItem>
+          <MenuItem onClick={() => setSearchExecution('not_completed')} isSelected={filter === 'not_completed'}>
+          Not Completed
+          </MenuItem>
+        </MenuList>
+      </Menu>
       )}
+        </div>
     </div>);
 
   return (
@@ -228,43 +254,24 @@ const Todos = ({ user }) => {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'start',
+        justifyContent: 'center',
         alignItems: 'center',
       }
     }>
       <h1>Todos</h1>
       <TodoFilters></TodoFilters>
-      <ul>
-        {filteredTodos.map(todo => (
-          <li key={todo.id}>
-            {editingId === todo.id ? (
-              <>
-                <input
+      <ul className='todo-list'>
+        {filteredTodos.map((todo, index) => (
+          <li key={todo.id} className='todo-item'>
+                                  <span>{index+1}</span>
+            <CheckBox isCompleted={todo.completed} handleChange={() => handleUpdateTodo({ ...todo, completed: !todo.completed })}/>
+            <input
+            className='todo-title'
                   type="text"
-                  value={editingTitle}
-                  onChange={(e) => setEditingTitle(e.target.value)}
+                  value={todo.title}
+                  onChange={(e) => handleUpdateTodo({ ...todo, title: e.target.value })}
                 />
-                <button onClick={() => handleUpdateTodo({ ...todo, title: editingTitle })}>
-                  Save
-                </button>
-                <button onClick={() => { setEditingId(null); setEditingTitle(''); }}>
-                  Cancel
-                </button>
-              </>
-            ) : (
-              <>
-                {todo.id}. {todo.title}
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  onChange={() => handleUpdateTodo({ ...todo, completed: !todo.completed })}
-                />
-                <button onClick={() => { setEditingId(todo.id); setEditingTitle(todo.title); }}>
-                  Edit
-                </button>
-                <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
-              </>
-            )}
+                <button style={{backgroundColor: 'transparent'}} onClick={() => handleDeleteTodo(todo.id)}><DeleteIcon style={{color: 'white'}}/></button>
           </li>
         ))}
       </ul>

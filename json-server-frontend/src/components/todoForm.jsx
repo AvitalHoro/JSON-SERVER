@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { IoIosAdd } from "react-icons/io";
+
 
 //----------------Help add new task---------------------
 const TodoForm = ({ onAddTodo }) => {
@@ -13,15 +15,17 @@ const TodoForm = ({ onAddTodo }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='todo-item'>
+            <button className='add-button' type="submit"><IoIosAdd/></button>
+
       <input
+      className='todo-title'
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Add new todo"
         required
       />
-      <button type="submit">Add</button>
     </form>
   );
 };
