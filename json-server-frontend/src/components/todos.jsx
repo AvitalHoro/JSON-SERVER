@@ -4,18 +4,17 @@ import { Button, Menu, MenuButton, MenuList, MenuItem, Input, Select, Flex } fro
 import { ChevronDownIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons';
 import { FiFilter } from 'react-icons/fi';
 import CheckBox from './CheckBox';
-import SearchInput from './SearchInput';
+import SearchInput from './SearchInputTodos';
 import { color } from 'framer-motion';
 
 
-//-------------------Define API URL-----------------------------------------
-const API_URL = 'http://localhost:3000/todos';
 
 //-------------------Todo Component------------------------------------------
 
 const Todos = ({ user }) => {
 
 
+  const API_URL = `http://localhost:3000/todos`;
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState('serial');
   const [search, setSearch] = useState('');
@@ -30,16 +29,16 @@ const Todos = ({ user }) => {
   useEffect(() => {
     async function getTodos() {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(`${API_URL}?userId=${user.id}`);
         const data = await response.json();
-        const userTodos = data.filter(todo => todo.userId === user.id);
-        setTodos(userTodos.slice(0, 20));
+        // const userTodos = data.filter(todo => todo.userId === user.id);
+        setTodos(data.map((todo, index)=> ({...todo, serialNum: index+1})));
       } catch (error) {
         console.error('Error fetching todos:', error);
       }
     }
     getTodos();
-  }, []);
+  }, [user]);
 
 
 //-------------------Add new todo-----------------------------------------------
@@ -58,7 +57,7 @@ const Todos = ({ user }) => {
       }
 
       const addedTodo = await response.json();
-      setTodos([...todos, addedTodo]);
+      setTodos([...todos, {...addedTodo, serialNum: todos.length + 1}]);
     } catch (error) {
       console.error('Error adding todo:', error);
     }
@@ -68,12 +67,14 @@ const Todos = ({ user }) => {
 //-------------------Update todo------------------------------------------------
   const handleUpdateTodo = async (updatedTodo) => {
     try {
+      const { serialNum, ...todoWithoutSerialNum } = updatedTodo;
+
       const response = await fetch(`${API_URL}/${updatedTodo.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedTodo),
+        body: JSON.stringify(todoWithoutSerialNum),
       });
 
       if (!response.ok) {
@@ -81,7 +82,7 @@ const Todos = ({ user }) => {
       }
 
       const data = await response.json();
-      setTodos(todos.map(todo => (todo.id === data.id ? data : todo)));
+      setTodos(todos.map(todo => (todo.id === data.id ? {...data, serialNum: serialNum} : todo)));
       setEditingId(null);
       setEditingTitle('');
     } catch (error) {
@@ -127,16 +128,16 @@ const FilterMenu = () => {
         </Flex>
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={() => handleMenuItemClick('serial')} isSelected={filter === 'serial'}>
+          <MenuItem onClick={() => handleMenuItemClick('serial')} border={filter === 'serial' ? '2px solid black' : 'none'}>
             Serial
           </MenuItem>
-          <MenuItem onClick={() => handleMenuItemClick('alphabetical')} isSelected={filter === 'alphabetical'}>
+          <MenuItem onClick={() => handleMenuItemClick('alphabetical')} border={filter === 'alphabetical' ? '2px solid black' : 'none'} >
             Alphabetical
           </MenuItem>
-          <MenuItem onClick={() => handleMenuItemClick('performance')} isSelected={filter === 'performance'}>
+          <MenuItem onClick={() => handleMenuItemClick('performance')} border={filter === 'performance' ? '2px solid black' : 'none'}>
             Performance
           </MenuItem>
-          <MenuItem onClick={() => handleMenuItemClick('random')} isSelected={filter === 'random'}>
+          <MenuItem onClick={() => handleMenuItemClick('random')} border={filter === 'random' ? '2px solid black' : 'none'}>
             Random
           </MenuItem>
         </MenuList>
@@ -162,13 +163,13 @@ const SearchMenu = ({}) => {
         </Flex>
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={() => handleMenuItemClick('serial')} isSelected={filter === 'serial'}>
+          <MenuItem onClick={() => handleMenuItemClick('serial')} border={filter === 'serial' ? '2px solid black' : 'none'}>
             Serial Number
           </MenuItem>
-          <MenuItem onClick={() => handleMenuItemClick('title')} isSelected={filter === 'title'}>
+          <MenuItem onClick={() => handleMenuItemClick('title')} border={filter === 'title' ? '2px solid black' : 'none'}>
           Title
           </MenuItem>
-          <MenuItem onClick={() => handleMenuItemClick('execution')} isSelected={filter === 'execution'}>
+          <MenuItem onClick={() => handleMenuItemClick('execution')} border={filter === 'execution' ? '2px solid black' : 'none'}>
           Execution Status
           </MenuItem>
         </MenuList>
@@ -181,9 +182,9 @@ const SearchMenu = ({}) => {
   
 //-------------------Filter and sort todos------------------------------------------
   const filteredTodos = todos
-    .filter(todo => {
-      if (searchCriteria === 'serial') {
-        return search ? todo.id.toString().includes(search) : true;
+  .filter((todo, index) => {
+    if (searchCriteria === 'serial') {
+        return search? todo.serialNum.toString().includes(search) : true;
       }
       if (searchCriteria === 'title') {
         return search ? todo.title.toLowerCase().includes(search.toLowerCase()) : true;
@@ -228,13 +229,13 @@ const SearchMenu = ({}) => {
         </Flex>
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={() => setSearchExecution('all')} isSelected={filter === 'all'}>
+          <MenuItem onClick={() => setSearchExecution('all')} border={filter === 'all' ? '2px solid black' : 'none'}>
             All
           </MenuItem>
-          <MenuItem onClick={() => setSearchExecution('completed')} isSelected={filter === 'completed'}>
+          <MenuItem onClick={() => setSearchExecution('completed')} border={filter === 'completed' ? '2px solid black' : 'none'}>
           Completed
           </MenuItem>
-          <MenuItem onClick={() => setSearchExecution('not_completed')} isSelected={filter === 'not_completed'}>
+          <MenuItem onClick={() => setSearchExecution('not_completed')} border={filter === 'not_completed' ? '2px solid black' : 'none'}>
           Not Completed
           </MenuItem>
         </MenuList>
@@ -259,7 +260,7 @@ const SearchMenu = ({}) => {
       <ul className='todo-list'>
         {filteredTodos.map((todo, index) => (
           <li key={todo.id} className='todo-item'>
-                                  <span>{index+1}</span>
+                                  <span>{todo.serialNum}</span>
             <CheckBox isCompleted={todo.completed} handleChange={() => handleUpdateTodo({ ...todo, completed: !todo.completed })}/>
             <input
             className='todo-title'
@@ -267,7 +268,7 @@ const SearchMenu = ({}) => {
                   value={todo.title}
                   onChange={(e) => handleUpdateTodo({ ...todo, title: e.target.value })}
                 />
-                <button style={{backgroundColor: 'transparent'}} onClick={() => handleDeleteTodo(todo.id)}><DeleteIcon style={{color: 'white'}}/></button>
+                <button className='delete-button' onClick={() => handleDeleteTodo(todo.id)}><DeleteIcon style={{color: 'white'}}/></button>
           </li>
         ))}
       </ul>
