@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PostForm from './PostForm';
+import { Button, Menu, MenuButton, MenuList, MenuItem, Flex } from '@chakra-ui/react';
+import { ChevronDownIcon, Search2Icon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import SearchInput from './SearchInputTodos';
 
-//-------------------Define API URL------------------------------------------------
 const API_URL = 'http://localhost:3000/posts';
 
-//-------------------PostDetails Component------------------------------------------
 const Posts = ({ user }) => {
   const CURRENT_USER_ID = user.id;
   const [posts, setPosts] = useState([]);
@@ -15,7 +16,6 @@ const Posts = ({ user }) => {
   const [updatedTitle, setUpdatedTitle] = useState('');
   const [updatedBody, setUpdatedBody] = useState('');
 
-  //-------------------Fetch posts from the API for the current user----------
   useEffect(() => {
     async function fetchPosts() {
       try {
@@ -28,9 +28,7 @@ const Posts = ({ user }) => {
       }
     }
     fetchPosts();
-  }, []);
-
-  //-------------------Add new post---------------------------------------------------
+  }, [CURRENT_USER_ID]);
 
   const handleAddPost = async (newPost) => {
     try {
@@ -52,7 +50,7 @@ const Posts = ({ user }) => {
       console.error('Error adding post:', error);
     }
   };
-//-------------------Delete post----------------------------------------------------
+
   const handleDeletePost = async (id) => {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
@@ -68,8 +66,6 @@ const Posts = ({ user }) => {
       console.error('Error deleting post:', error);
     }
   };
-
-  //-------------------Update post-----------------------------------------------------
 
   const handleUpdatePost = async () => {
     try {
@@ -94,40 +90,64 @@ const Posts = ({ user }) => {
       console.error('Error updating post:', error);
     }
   };
-//-------------------Search post-----------------------------------------------------
 
-  const filteredPosts = posts.filter(post => {
-    if (searchCriteria === 'serial') {
-      return post.id.toString().includes(search);
-    } else if (searchCriteria === 'title') {
-      return post.title.toLowerCase().includes(search.toLowerCase());
-    }
-    return true;
-  });
+  const filteredPosts = posts.filter(post => 
+    post[searchCriteria].toLowerCase().includes(search.toLowerCase())
+  );
+
+  const SearchMenu = () => {
+    const handleMenuItemClick = (value) => {
+      setSearchCriteria(value);
+    };
+
+    return (
+      <div style={{ zIndex: '100' }}>
+        <Menu>
+          <MenuButton px={12} py={8} as={Button} rightIcon={<ChevronDownIcon />}>
+            <Flex align="center">
+              <Search2Icon mr={5} />
+              Search by
+            </Flex>
+          </MenuButton>
+          <MenuList>
+            <MenuItem onClick={() => handleMenuItemClick('serial')}>
+              Serial Number
+            </MenuItem>
+            <MenuItem onClick={() => handleMenuItemClick('title')}>
+              Title
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      </div>
+    );
+  };
 
   return (
     <div>
+    
       <h1>Posts</h1>
-      <input
-        type="text"
-        placeholder="Search"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <select value={searchCriteria} onChange={(e) => setSearchCriteria(e.target.value)}>
-        <option value="serial">Serial Number</option>
-        <option value="title">Title</option>
-      </select>
+      <div style={{ zIndex: '100' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+          <SearchMenu />
+          <SearchInput search={search} setSearch={setSearch} />
+        </div>
+      </div>
       <PostForm onAddPost={handleAddPost} />
-      <ul>
+       <ul className='todo-list'>
         {filteredPosts.map(post => (
-          <li key={post.id}>
+          <li key={post.id} className='post-item'>
             <Link to={`/posts/${post.id}`}>
               {post.id}. {post.title}
             </Link>
-            <button onClick={() => handleDeletePost(post.id)}>Delete</button>
-            <button onClick={() => { setEditingPost(post); setUpdatedTitle(post.title); setUpdatedBody(post.body); }}>
-              Update
+            <button className='delete-button' onClick={() => handleDeletePost(post.id)}>
+              <DeleteIcon style={{ color: '#E48BBF' }} />
+            </button>
+            <button className='delete-button' onClick={() => {
+              setEditingPost(post);
+              setUpdatedTitle(post.title);
+              setUpdatedBody(post.body);
+            }}>
+              <EditIcon style={{ color: '#E48BBF' }} />
             </button>
           </li>
         ))}

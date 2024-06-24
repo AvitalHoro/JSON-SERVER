@@ -122,10 +122,20 @@
 
 .todo-item {
   position: relative;
-  /* padding-top: 20px; Adjust this based on the size of the circle */
   margin: 20px 0;
   border: 1px solid #ddd;
   list-style: none;
+}
+.post-item {
+  position: relative;
+  /* padding-top: 20px; Adjust this based on the size of the circle */
+  margin: 20px 0;
+  border: 1px solid #E48BBF;
+  list-style: none;
+  background-color: #fff;
+  border-radius: 18px;
+  font-family: 'Figtree', sans-serif;
+  
 }
 
 .todo-item span {

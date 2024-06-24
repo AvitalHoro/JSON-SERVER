@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { IoIosAdd } from 'react-icons/io'; // Import the IoIosAdd icon
 
-//-------------------PostForm components-----------------------------
 const PostForm = ({ onAddPost }) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -11,23 +11,27 @@ const PostForm = ({ onAddPost }) => {
     setTitle('');
     setBody('');
   };
-//-------------------Add new post------------------------------------
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='todo-item' style={{ backgroundColor: '#E48BBF' }}>
+      <button className='add-button' type="submit"><IoIosAdd /></button>
+
       <input
+        className='todo-title'
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Title"
+        placeholder="Add title to post"
         required
       />
-      <textarea
+      <input
+        className='todo-title'
+        type="text"
         value={body}
         onChange={(e) => setBody(e.target.value)}
-        placeholder="Body"
+        placeholder="Add body to post"
         required
-      ></textarea>
-      <button type="submit">Add Post</button>
+      />
     </form>
   );
 };
