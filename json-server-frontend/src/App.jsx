@@ -11,6 +11,7 @@ import CompletionOfDetails from './components/CompletionOfDetails';
 import NotFound from './components/NotFound';
 import Sidebar from './components/sideBar';
 import './App.css';
+import PostDetails from './components/PostDetails';
 
 const App = () => {
 
@@ -44,6 +45,7 @@ const App = () => {
         <Route path="/home" element={<PrivateRoute><Home user={User} setUser={setUser} InfoVisible={InfoVisible} handleInfo={handleInfo}/></PrivateRoute>} />
         <Route path="/todos" element={<PrivateRoute><Todos user={User}/></PrivateRoute>} />
         <Route path="/posts" element={<PrivateRoute><Posts user={User}/></PrivateRoute>} />
+        <Route path="/posts/:id" element={<PrivateRoute><PostDetails user={User} /></PrivateRoute>} />
         <Route path="/albums" element={<PrivateRoute><Albums user={User}/></PrivateRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>

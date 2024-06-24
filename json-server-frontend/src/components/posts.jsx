@@ -1,114 +1,153 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import Comments from './comments';
+import { Link } from 'react-router-dom';
+import PostForm from './PostForm';
 
+//-------------------Define API URL------------------------------------------------
 const API_URL = 'http://localhost:3000/posts';
-const COMMENTS_URL = 'http://localhost:3000/comments';
-const CURRENT_USER_ID = 1; // Simulate the current logged-in user ID
 
-const PostDetails = () => {
-  const { id } = useParams();
-  const [post, setPost] = useState(null);
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
-  const [currentUser, setCurrentUser] = useState({ id: CURRENT_USER_ID, name: 'User 1' });
+//-------------------PostDetails Component------------------------------------------
+const Posts = ({ user }) => {
+  const CURRENT_USER_ID = user.id;
+  const [posts, setPosts] = useState([]);
+  const [search, setSearch] = useState('');
+  const [searchCriteria, setSearchCriteria] = useState('title');
+  const [editingPost, setEditingPost] = useState(null);
+  const [updatedTitle, setUpdatedTitle] = useState('');
+  const [updatedBody, setUpdatedBody] = useState('');
 
+  //-------------------Fetch posts from the API for the current user----------
   useEffect(() => {
-    async function fetchPostAndComments() {
+    async function fetchPosts() {
       try {
-        const postResponse = await fetch(`${API_URL}/${id}`);
-        const postData = await postResponse.json();
-        setPost(postData);
-
-        const commentsResponse = await fetch(`${COMMENTS_URL}?postId=${id}`);
-        const commentsData = await commentsResponse.json();
-        setComments(commentsData);
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        const userPosts = data.filter(post => post.userId === CURRENT_USER_ID);
+        setPosts(userPosts);
       } catch (error) {
-        console.error('Error fetching post and comments:', error);
+        console.error('Error fetching posts:', error);
       }
     }
-    fetchPostAndComments();
-  }, [id]);
+    fetchPosts();
+  }, []);
 
-  const handleAddComment = async () => {
+  //-------------------Add new post---------------------------------------------------
+
+  const handleAddPost = async (newPost) => {
     try {
-      const response = await fetch(COMMENTS_URL, {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ postId: id, body: newComment, userId: CURRENT_USER_ID }),
+        body: JSON.stringify({ ...newPost, userId: CURRENT_USER_ID }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to add comment');
+        throw new Error('Failed to add post');
       }
 
-      const addedComment = await response.json();
-      setComments([...comments, addedComment]);
-      setNewComment('');
+      const addedPost = await response.json();
+      setPosts([...posts, addedPost]);
     } catch (error) {
-      console.error('Error adding comment:', error);
+      console.error('Error adding post:', error);
     }
   };
-
-  const handleDeleteComment = async (commentId) => {
+//-------------------Delete post----------------------------------------------------
+  const handleDeletePost = async (id) => {
     try {
-      const response = await fetch(`${COMMENTS_URL}/${commentId}`, {
+      const response = await fetch(`${API_URL}/${id}`, {
         method: 'DELETE',
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete comment');
+        throw new Error('Failed to delete post');
       }
 
-      setComments(comments.filter(comment => comment.id !== commentId));
+      setPosts(posts.filter(post => post.id !== id));
     } catch (error) {
-      console.error('Error deleting comment:', error);
+      console.error('Error deleting post:', error);
     }
   };
 
-  const handleUpdateComment = async (commentId, updatedBody) => {
+  //-------------------Update post-----------------------------------------------------
+
+  const handleUpdatePost = async () => {
     try {
-      const response = await fetch(`${COMMENTS_URL}/${commentId}`, {
+      const response = await fetch(`${API_URL}/${editingPost.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ body: updatedBody }),
+        body: JSON.stringify({ ...editingPost, title: updatedTitle, body: updatedBody }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update comment');
+        throw new Error('Failed to update post');
       }
 
-      const updatedComment = await response.json();
-      setComments(comments.map(comment => (comment.id === commentId ? updatedComment : comment)));
+      const updatedPost = await response.json();
+      setPosts(posts.map(p => (p.id === updatedPost.id ? updatedPost : p)));
+      setEditingPost(null);
+      setUpdatedTitle('');
+      setUpdatedBody('');
     } catch (error) {
-      console.error('Error updating comment:', error);
+      console.error('Error updating post:', error);
     }
   };
+//-------------------Search post-----------------------------------------------------
+
+  const filteredPosts = posts.filter(post => {
+    if (searchCriteria === 'serial') {
+      return post.id.toString().includes(search);
+    } else if (searchCriteria === 'title') {
+      return post.title.toLowerCase().includes(search.toLowerCase());
+    }
+    return true;
+  });
 
   return (
     <div>
-      {post && (
-        <>
-          <h1>{post.title}</h1>
-          <p>{post.body}</p>
-          <h2>Comments</h2>
-          <Comments
-            comments={comments}
-            onAddComment={handleAddComment}
-            onDeleteComment={handleDeleteComment}
-            onUpdateComment={handleUpdateComment}
-            newComment={newComment}
-            setNewComment={setNewComment}
-            currentUser={currentUser}
+      <h1>Posts</h1>
+      <input
+        type="text"
+        placeholder="Search"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <select value={searchCriteria} onChange={(e) => setSearchCriteria(e.target.value)}>
+        <option value="serial">Serial Number</option>
+        <option value="title">Title</option>
+      </select>
+      <PostForm onAddPost={handleAddPost} />
+      <ul>
+        {filteredPosts.map(post => (
+          <li key={post.id}>
+            <Link to={`/posts/${post.id}`}>
+              {post.id}. {post.title}
+            </Link>
+            <button onClick={() => handleDeletePost(post.id)}>Delete</button>
+            <button onClick={() => { setEditingPost(post); setUpdatedTitle(post.title); setUpdatedBody(post.body); }}>
+              Update
+            </button>
+          </li>
+        ))}
+      </ul>
+      {editingPost && (
+        <div>
+          <input
+            type="text"
+            value={updatedTitle}
+            onChange={(e) => setUpdatedTitle(e.target.value)}
           />
-        </>
+          <textarea
+            value={updatedBody}
+            onChange={(e) => setUpdatedBody(e.target.value)}
+          ></textarea>
+          <button onClick={handleUpdatePost}>Save Update</button>
+        </div>
       )}
     </div>
   );
 };
 
-export default PostDetails;
+export default Posts;
