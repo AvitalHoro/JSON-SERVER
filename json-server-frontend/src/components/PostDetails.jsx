@@ -1,35 +1,45 @@
-// src/pages/PostDetails.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Comments from './comments';
+import Comments from './Comments';
 
+//-------------------Define API URL------------------------------------------------
 const API_URL = 'http://localhost:3000/posts';
 const COMMENTS_URL = 'http://localhost:3000/comments';
-const CURRENT_USER_ID = 1; // Simulate the current logged-in user ID
 
-const PostDetails = () => {
+
+//-------------------PostDetails Component------------------------------------------
+const PostDetails = (user) => {
+  const CURRENT_USER_ID = user.id;
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+//-------------------Fetch post+comments from the API for the current user----------
   useEffect(() => {
     async function fetchPostAndComments() {
       try {
         const postResponse = await fetch(`${API_URL}/${id}`);
+        if (!postResponse.ok) {
+          throw new Error('Post not found');
+        }
         const postData = await postResponse.json();
         setPost(postData);
 
         const commentsResponse = await fetch(`${COMMENTS_URL}?postId=${id}`);
         const commentsData = await commentsResponse.json();
         setComments(commentsData);
+        setLoading(false);
       } catch (error) {
-        console.error('Error fetching post and comments:', error);
+        setError(error.message);
+        setLoading(false);
       }
     }
     fetchPostAndComments();
   }, [id]);
-
+//-------------------Add new comment---------------------------------------------------
   const handleAddComment = async () => {
     try {
       const response = await fetch(COMMENTS_URL, {
@@ -51,7 +61,7 @@ const PostDetails = () => {
       console.error('Error adding comment:', error);
     }
   };
-
+//-------------------Delete comment----------------------------------------------------
   const handleDeleteComment = async (commentId) => {
     try {
       const response = await fetch(`${COMMENTS_URL}/${commentId}`, {
@@ -67,6 +77,7 @@ const PostDetails = () => {
       console.error('Error deleting comment:', error);
     }
   };
+//-------------------Update comment-----------------------------------------------------
 
   const handleUpdateComment = async (commentId, updatedBody) => {
     try {
@@ -89,6 +100,14 @@ const PostDetails = () => {
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div>
       {post && (
@@ -103,6 +122,8 @@ const PostDetails = () => {
             onUpdateComment={handleUpdateComment}
             newComment={newComment}
             setNewComment={setNewComment}
+            postUserId={CURRENT_USER_ID}
+
           />
         </>
       )}

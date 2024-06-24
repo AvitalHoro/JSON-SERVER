@@ -1,6 +1,6 @@
-// src/components/PostForm.jsx
 import React, { useState } from 'react';
 
+//-------------------POstForm components-----------------------------
 const PostForm = ({ onAddPost }) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -11,7 +11,7 @@ const PostForm = ({ onAddPost }) => {
     setTitle('');
     setBody('');
   };
-
+//-------------------Add new post-----------------------------
   return (
     <form onSubmit={handleSubmit}>
       <input

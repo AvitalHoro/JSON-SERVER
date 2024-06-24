@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 
-const Comments = ({ comments, onAddComment, onDeleteComment, onUpdateComment, newComment, setNewComment, currentUser }) => {
+//----------------Comments Component------------------------------------------
+const Comments = ({
+  comments,
+  onAddComment,
+  onDeleteComment,
+  onUpdateComment,
+  newComment,
+  setNewComment,
+  userId,
+  postUserId, 
+}) => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingCommentBody, setEditingCommentBody] = useState('');
-
+//-------------------Update Comments------------------------------------------------
   const handleEdit = (comment) => {
     setEditingCommentId(comment.id);
     setEditingCommentBody(comment.body);
@@ -18,7 +28,7 @@ const Comments = ({ comments, onAddComment, onDeleteComment, onUpdateComment, ne
   return (
     <div>
       <ul>
-        {comments.map(comment => (
+        {comments.map((comment) => (
           <li key={comment.id}>
             {editingCommentId === comment.id ? (
               <>
@@ -31,12 +41,13 @@ const Comments = ({ comments, onAddComment, onDeleteComment, onUpdateComment, ne
                 <button onClick={() => setEditingCommentId(null)}>Cancel</button>
               </>
             ) : (
+//------------------- Only allow editing/deleting if active user wrote the post-------          
               <>
                 <p>{comment.body}</p>
-                {comment.userId === currentUser.id && (
+                {userId === postUserId && ( 
                   <>
-                    <button onClick={() => handleEdit(comment)}>Edit</button>
                     <button onClick={() => onDeleteComment(comment.id)}>Delete</button>
+                    <button onClick={() => handleEdit(comment)}>Edit</button>
                   </>
                 )}
               </>
@@ -44,13 +55,15 @@ const Comments = ({ comments, onAddComment, onDeleteComment, onUpdateComment, ne
           </li>
         ))}
       </ul>
-      <input
+      {}
+      <input 
+//-------------------Add Comments------------------------------------------------------
         type="text"
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
         placeholder="Add a comment"
       />
-      <button onClick={onAddComment}>Add Comment</button>
+      <button onClick={() => onAddComment(userId)}>Add Comment</button>
     </div>
   );
 };

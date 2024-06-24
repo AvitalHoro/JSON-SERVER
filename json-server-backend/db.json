@@ -13,40 +13,29 @@
       "body": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
     },
     {
-      "userId": 1,
-      "id": "3",
-      "title": "ea molestias quasi exercitationem repellat qui ipsa sit aut",
-      "body": "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut"
+      "title": "Updated Title",
+      "body": "Updated Body",
+      "id": "3"
     },
     {
-      "userId": 1,
-      "id": "4",
-      "title": "eum et est occaecati",
-      "body": "ullam et saepe reiciendis voluptatem adipisci\nsit amet autem assumenda provident rerum culpa\nquis hic commodi nesciunt rem tenetur doloremque ipsam iure\nquis sunt voluptatem rerum illo velit"
+      "title": "Updated Title",
+      "body": "Updated Body",
+      "id": "4"
     },
     {
-      "userId": 1,
-      "id": "5",
-      "title": "nesciunt quas odio",
-      "body": "repudiandae veniam quaerat sunt sed\nalias aut fugiat sit autem sed est\nvoluptatem omnis possimus esse voluptatibus quis\nest aut tenetur dolor neque"
+      "title": "Updated Title",
+      "body": "Updated Body",
+      "id": "5"
     },
     {
-      "userId": 1,
-      "id": "6",
-      "title": "dolorem eum magni eos aperiam quia",
-      "body": "ut aspernatur corporis harum nihil quis provident sequi\nmollitia nobis aliquid molestiae\nperspiciatis et ea nemo ab reprehenderit accusantium quas\nvoluptate dolores velit et doloremque molestiae"
+      "title": "Updated Title",
+      "body": "Updated Body",
+      "id": "6"
     },
     {
-      "userId": 1,
-      "id": "7",
-      "title": "magnam facilis autem",
-      "body": "dolore placeat quibusdam ea quo vitae\nmagni quis enim qui quis quo nemo aut saepe\nquidem repellat excepturi ut quia\nsunt ut sequi eos ea sed quas"
-    },
-    {
-      "userId": 1,
-      "id": "8",
-      "title": "dolorem dolore est ipsam",
-      "body": "dignissimos aperiam dolorem qui eum\nfacilis quibusdam animi sint suscipit qui sint possimus cum\nquaerat magni maiores excepturi\nipsam ut commodi dolor voluptatum modi aut vitae"
+      "title": "Updated Title",
+      "body": "Updated Body",
+      "id": "7"
     },
     {
       "userId": 1,
@@ -599,6 +588,57 @@
       "id": "100",
       "title": "at nam consequatur ea labore ea harum",
       "body": "cupiditate quo est a modi nesciunt soluta\nipsa voluptas error itaque dicta in\nautem qui minus magnam et distinctio eum\naccusamus ratione error aut"
+<<<<<<< HEAD
+    },
+    {
+      "id": "12d8",
+      "title": "ין",
+      "body": "ין",
+      "userId": 1
+    },
+    {
+      "id": "b7d0",
+      "title": "ba",
+      "body": "v bnm",
+      "userId": 1
+    },
+    {
+      "id": "76dc",
+      "title": "mgn",
+      "body": "dfgh",
+      "userId": 1
+    },
+    {
+      "id": "0c2a",
+      "title": "hii",
+      "body": "you need help??",
+      "userId": 1
+    },
+    {
+      "id": "42ff",
+      "title": "m,",
+      "body": "njmk",
+      "userId": 1
+    },
+    {
+      "id": "ac02",
+      "title": "n",
+      "body": "h",
+      "userId": 1
+    },
+    {
+      "id": "92b2",
+      "title": "hj",
+      "body": "hj",
+      "userId": "50b3"
+    },
+    {
+      "id": "a20c",
+      "title": "hi",
+      "body": "what?",
+      "userId": "50b3"
+=======
+>>>>>>> 0dea7ec1670f7e218dcde67de3e55860b83c9430
     }
   ],
   "comments": [
@@ -811,13 +851,6 @@
       "name": "quasi nulla ducimus facilis non voluptas aut",
       "email": "Lurline@marvin.biz",
       "body": "consequuntur quia voluptate assumenda et\nautem voluptatem reiciendis ipsum animi est provident\nearum aperiam sapiente ad vitae iste\naccusantium aperiam eius qui dolore voluptatem et"
-    },
-    {
-      "postId": 7,
-      "id": "31",
-      "name": "ex velit ut cum eius odio ad placeat",
-      "email": "Buford@shaylee.biz",
-      "body": "quia incidunt ut\naliquid est ut rerum deleniti iure est\nipsum quia ea sint et\nvoluptatem quaerat eaque repudiandae eveniet aut"
     },
     {
       "postId": 7,
@@ -4101,6 +4134,48 @@
       "name": "ex eaque eum natus",
       "email": "Emma@joanny.ca",
       "body": "perspiciatis quis doloremque\nveniam nisi eos velit sed\nid totam inventore voluptatem laborum et eveniet\naut aut aut maxime quia temporibus ut omnis"
+    },
+    {
+      "id": "3218",
+      "postId": "7",
+      "body": "hi",
+      "userId": 1
+    },
+    {
+      "id": "23ed",
+      "postId": "b7d0",
+      "body": "nm",
+      "userId": 1
+    },
+    {
+      "id": "67be",
+      "postId": "b7d0",
+      "body": "ndf",
+      "userId": 1
+    },
+    {
+      "id": "44ec",
+      "postId": "0c2a",
+      "body": "n",
+      "userId": 1
+    },
+    {
+      "id": "7d74",
+      "postId": "0c2a",
+      "body": "",
+      "userId": 1
+    },
+    {
+      "id": "6a87",
+      "postId": "0c2a",
+      "body": "",
+      "userId": 1
+    },
+    {
+      "id": "3675",
+      "postId": "ac02",
+      "body": "nm",
+      "userId": 1
     }
   ],
   "albums": [
@@ -39743,6 +39818,29 @@
         "catchPhrase": " is the best",
         "bs": " is the best of the best"
       }
+    },
+    {
+      "id": "50b3",
+      "name": "mic",
+      "username": "michal",
+      "email": "micalhabib12@gmail.com",
+      "address": {
+        "street": "4 מעלה השופר",
+        "suite": "",
+        "city": "בית אל",
+        "zipcode": "9063100",
+        "geo": {
+          "lat": 72.01101082657098,
+          "lng": 22.493204805200918
+        }
+      },
+      "phone": "0586063232",
+      "website": "12",
+      "company": {
+        "name": "mi",
+        "catchPhrase": "mi is the best",
+        "bs": "mi is the best of the best"
+      }
     }
   ],
   "todos": [
@@ -40959,22 +41057,10 @@
       "userId": "2096"
     },
     {
-      "id": "1071",
-      "title": "ttt",
+      "id": "6c59",
+      "title": "smile",
       "completed": false,
-      "userId": "2096"
-    },
-    {
-      "id": "f069",
-      "title": "ggg",
-      "completed": false,
-      "userId": "2096"
-    },
-    {
-      "id": "0011",
-      "title": "hjk",
-      "completed": false,
-      "userId": "2096"
+      "userId": "50b3"
     }
   ]
 }
