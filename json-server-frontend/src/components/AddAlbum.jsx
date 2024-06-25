@@ -14,7 +14,7 @@ const AddAlbum = ({ onAddAlbum }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='todo-item'  style={{backgroundColor: '#DB6FAD'}}>
+    <form onSubmit={handleSubmit} className='todo-item'  style={{backgroundColor: '#FFC0CB'}}>
             <button className='add-button' type="submit"><IoIosAdd/></button>
 
       <input

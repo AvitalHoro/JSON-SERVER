@@ -11,6 +11,9 @@ const Home = ( { user, setUser, InfoVisible, handleInfo }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('todos');
+    localStorage.removeItem('posts');
+    localStorage.removeItem('albums');
     setUser(null);
     navigate('/login');
   };

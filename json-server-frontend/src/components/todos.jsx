@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TodoForm from '../components/todoForm';
-// import { Button, Menu, MenuItem } from '@mui/material';
-// import FilterAltIcon from '@mui/icons-material/FilterList';
 import { Button, Menu, MenuButton, MenuList, MenuItem, Input, Select, Flex } from '@chakra-ui/react';
 import { ChevronDownIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons';
 import { FiFilter } from 'react-icons/fi';
@@ -22,8 +20,6 @@ const Todos = ({ user }) => {
   const [search, setSearch] = useState('');
   const [searchCriteria, setSearchCriteria] = useState('title');
   const [searchExecution, setSearchExecution] = useState('all');
-  const [editingId, setEditingId] = useState(null);
-  const [editingTitle, setEditingTitle] = useState('');
   
   console.log('re-render', search);
 
@@ -32,11 +28,20 @@ const Todos = ({ user }) => {
 //-------------------Fetch todos from the API for the current user-------------
   useEffect(() => {
     async function getTodos() {
+      const todosFromStorage = localStorage.getItem('todos');
+      if (todosFromStorage && todosFromStorage.length > 0) {
+        setTodos(JSON.parse(todosFromStorage));
+        console.log('I takes todos from storage:', todosFromStorage);
+        return;
+      }
       try {
         const response = await fetch(`${API_URL}?userId=${user.id}`);
         const data = await response.json();
+        console.log('I takes todos from API:', data);
         // const userTodos = data.filter(todo => todo.userId === user.id);
-        setTodos(data.map((todo, index)=> ({...todo, serialNum: index+1})));
+        const tmpTodos = data.map((todo, index)=> ({...todo, serialNum: index+1}))
+        setTodos(tmpTodos);
+        localStorage.setItem('todos', JSON.stringify(tmpTodos));
       } catch (error) {
         console.error('Error fetching todos:', error);
       }
@@ -61,7 +66,9 @@ const Todos = ({ user }) => {
       }
 
       const addedTodo = await response.json();
-      setTodos([...todos, {...addedTodo, serialNum: todos.length + 1}]);
+      const tmpTodos = [...todos, {...addedTodo, serialNum: todos.length + 1}]
+      setTodos(tmpTodos);
+      localStorage.setItem('todos', JSON.stringify(tmpTodos));
     } catch (error) {
       console.error('Error adding todo:', error);
     }
@@ -86,7 +93,9 @@ const Todos = ({ user }) => {
       }
 
       const data = await response.json();
-      setTodos(todos.map(todo => (todo.id === data.id ? {...data, serialNum: serialNum} : todo)));
+      const tmpTodos = todos.map(todo => (todo.id === data.id ? {...data, serialNum: serialNum} : todo))
+      setTodos(tmpTodos);
+      localStorage.setItem('todos', JSON.stringify(tmpTodos));
       setEditingId(null);
       setEditingTitle('');
     } catch (error) {
@@ -105,8 +114,9 @@ const Todos = ({ user }) => {
       if (!response.ok) {
         throw new Error('Failed to delete todo');
       }
-
-      setTodos(todos.filter(todo => todo.id !== id));
+      const tmpTodos = todos.filter(todo => todo.id !== id)
+      setTodos(tmpTodos);
+      localStorage.setItem('todos', JSON.stringify(tmpTodos));
     } catch (error) {
       console.error('Error deleting todo:', error);
     }
