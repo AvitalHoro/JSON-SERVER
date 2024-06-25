@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Comments from './Comments';
+import Comments from './comments';
 
 //-------------------Define API URL------------------------------------------------
 const API_URL = 'http://localhost:3000/posts';
