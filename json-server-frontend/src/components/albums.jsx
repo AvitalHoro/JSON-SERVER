@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Menu, MenuButton, MenuList, MenuItem, Flex } from '@chakra-ui/react';
 import { ChevronDownIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons';
 import { FiFilter } from 'react-icons/fi';
@@ -32,10 +32,18 @@ const Albums = ({ user }) => {
     //-------------------Fetch albums from the API for the current user-------------
     useEffect(() => {
         async function getAlbums() {
+            const albumsFromStorage = localStorage.getItem('albums');
+            if (albumsFromStorage && albumsFromStorage.length > 0) {
+              setAlbums(JSON.parse(albumsFromStorage));
+              console.log('I takes albums from storage:', albumsFromStorage);
+              return;
+            }
             try {
                 const response = await fetch(`${API_URL}?userId=${user.id}`);
                 const data = await response.json();
-                setAlbums(data.map((album, index) => ({ ...album, serialNum: index + 1 })));
+                const tmpAlbums = data.map((album, index) => ({ ...album, serialNum: index + 1 }));
+                setAlbums(tmpAlbums);
+                localStorage.setItem('albums', JSON.stringify(tmpAlbums));
             } catch (error) {
                 console.error('Error fetching albums:', error);
             }
@@ -60,7 +68,9 @@ const Albums = ({ user }) => {
             }
 
             const addedAlbum = await response.json();
-            setAlbums([...albums, { ...addedAlbum, serialNum: albums.length + 1 }]);
+            const tmpAlbums = [...albums, { ...addedAlbum, serialNum: albums.length + 1 }];
+            setAlbums(tmpAlbums);
+            localStorage.setItem('albums', JSON.stringify(tmpAlbums));
         } catch (error) {
             console.error('Error adding album:', error);
         }
@@ -86,7 +96,9 @@ const Albums = ({ user }) => {
             }
 
             const data = await response.json();
-            setAlbums(albums.map(album => (album.id === data.id ? { ...data, serialNum: serialNum } : album)));
+            const tmpAlbums = albums.map(album => (album.id === data.id ? { ...data, serialNum: serialNum } : album))
+            setAlbums(tmpAlbums);
+            localStorage.setItem('albums', JSON.stringify(tmpAlbums));
         } catch (error) {
             console.error('Error updating album:', error);
         }
@@ -103,8 +115,9 @@ const Albums = ({ user }) => {
             if (!response.ok) {
                 throw new Error('Failed to delete album');
             }
-
-            setAlbums(albums.filter(album => album.id !== id));
+            const tmpAlbums = albums.filter(album => album.id !== id);
+            setAlbums(tmpAlbums);
+            localStorage.setItem('albums', JSON.stringify(tmpAlbums));
         } catch (error) {
             console.error('Error deleting album:', error);
         }
@@ -244,7 +257,7 @@ const Albums = ({ user }) => {
                 <AlbumFilters></AlbumFilters>
                 <ul className='todo-list'>
                     {filteredAlbums.map((album, index) => (
-                        <li key={album.id} className='todo-item' style={{ backgroundColor: '#FFC0CB' }}>
+                        <li key={album.id} className='todo-item' style={{ backgroundColor: '#DB6FAD' }}>
                             <span>{album.serialNum}</span>
                             <img style={{ width: '55px', cursor: 'pointer' }} src="./img/photos.png" alt="תמונות" onClick={handleOpenPopUp(album)} />
                             <input
