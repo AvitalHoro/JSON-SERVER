@@ -8,7 +8,7 @@ import SearchInput from './SearchInputTodos';
 const API_URL = 'http://localhost:3000/posts';
 
 const Posts = ({ user }) => {
-  const CURRENT_USER_ID = user.id;
+
   const [posts, setPosts] = useState([]);
   const [search, setSearch] = useState('');
   const [searchCriteria, setSearchCriteria] = useState('title');
@@ -18,17 +18,26 @@ const Posts = ({ user }) => {
 
   useEffect(() => {
     async function fetchPosts() {
+      const postsFromStorage = localStorage.getItem('posts');
+      if (postsFromStorage && postsFromStorage.length > 0) {
+        setPosts(JSON.parse(postsFromStorage));
+        console.log('I takes posts from storage:\n', postsFromStorage);
+        return;
+      }
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(`${API_URL}?userId=${user.id}`);
         const data = await response.json();
-        const userPosts = data.filter(post => post.userId === CURRENT_USER_ID);
-        setPosts(userPosts);
+        const tmpPosts = data.map((post, index) => ({ ...post, serialNum: index + 1 }));
+        // const userPosts = data.filter(post => post.userId === CURRENT_USER_ID);
+        setPosts(tmpPosts);
+        localStorage.setItem('posts', JSON.stringify(tmpPosts));
+
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
     }
     fetchPosts();
-  }, [CURRENT_USER_ID]);
+  }, [user]);
 
   const handleAddPost = async (newPost) => {
     try {
@@ -37,7 +46,7 @@ const Posts = ({ user }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...newPost, userId: CURRENT_USER_ID }),
+        body: JSON.stringify({ ...newPost, userId: user.id }),
       });
 
       if (!response.ok) {
@@ -45,7 +54,9 @@ const Posts = ({ user }) => {
       }
 
       const addedPost = await response.json();
-      setPosts([...posts, addedPost]);
+      const tmpPosts = [...posts, {...addedPost, serialNum: posts.length + 1}];
+      setPosts(tmpPosts);
+      localStorage.setItem('posts', JSON.stringify(tmpPosts));
     } catch (error) {
       console.error('Error adding post:', error);
     }
@@ -61,7 +72,9 @@ const Posts = ({ user }) => {
         throw new Error('Failed to delete post');
       }
 
-      setPosts(posts.filter(post => post.id !== id));
+      const tmpPosts = posts.filter(post => post.id !== id);
+      setPosts(tmpPosts);
+      localStorage.setItem('posts', JSON.stringify(tmpPosts));
     } catch (error) {
       console.error('Error deleting post:', error);
     }
@@ -69,12 +82,15 @@ const Posts = ({ user }) => {
 
   const handleUpdatePost = async () => {
     try {
+
+      const { serialNum, ...postWithoutSerialNum } = editingPost;
+
       const response = await fetch(`${API_URL}/${editingPost.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...editingPost, title: updatedTitle, body: updatedBody }),
+        body: JSON.stringify({ ...postWithoutSerialNum, title: updatedTitle, body: updatedBody }),
       });
 
       if (!response.ok) {
@@ -82,7 +98,10 @@ const Posts = ({ user }) => {
       }
 
       const updatedPost = await response.json();
-      setPosts(posts.map(p => (p.id === updatedPost.id ? updatedPost : p)));
+      const tmpPosts = posts.map(p => (p.id === updatedPost.id ? {...updatedPost, serialNum: serialNum} : p))
+
+      setPosts(tmpPosts);
+      localStorage.setItem('posts', JSON.stringify(tmpPosts));
       setEditingPost(null);
       setUpdatedTitle('');
       setUpdatedBody('');
@@ -91,9 +110,9 @@ const Posts = ({ user }) => {
     }
   };
 
-  const filteredPosts = posts.filter(post => 
+  const filteredPosts = searchCriteria==='title'? (posts.filter(post => 
     post[searchCriteria].toLowerCase().includes(search.toLowerCase())
-  );
+  )): (posts.filter(post => post.serialNum.toString().includes(search)));
 
   const SearchMenu = () => {
     const handleMenuItemClick = (value) => {
@@ -137,12 +156,12 @@ const Posts = ({ user }) => {
         {filteredPosts.map(post => (
           <li key={post.id} className='post-item'>
             <Link to={`/posts/${post.id}`}>
-              {post.id}. {post.title}
+              {post.serialNum}. {post.title}
             </Link>
-            <button className='delete-button' onClick={() => handleDeletePost(post.id)}>
+            <button className='delete-button-p' onClick={() => handleDeletePost(post.id)}>
               <DeleteIcon style={{ color: '#E48BBF' }} />
             </button>
-            <button className='delete-button' onClick={() => {
+            <button className='delete-button-p' onClick={() => {
               setEditingPost(post);
               setUpdatedTitle(post.title);
               setUpdatedBody(post.body);
