@@ -244,7 +244,7 @@ const Albums = ({ user }) => {
                 <AlbumFilters></AlbumFilters>
                 <ul className='todo-list'>
                     {filteredAlbums.map((album, index) => (
-                        <li key={album.id} className='todo-item' style={{ backgroundColor: '#DB6FAD' }}>
+                        <li key={album.id} className='todo-item' style={{ backgroundColor: '#FFC0CB' }}>
                             <span>{album.serialNum}</span>
                             <img style={{ width: '55px', cursor: 'pointer' }} src="./img/photos.png" alt="תמונות" onClick={handleOpenPopUp(album)} />
                             <input

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
-//----------------Comments Component------------------------------------------
+//-------------------Comments Component------------------------------------------
 const Comments = ({
   comments,
   onAddComment,
@@ -9,11 +10,13 @@ const Comments = ({
   newComment,
   setNewComment,
   userId,
-  postUserId, 
+  postUserId,
 }) => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingCommentBody, setEditingCommentBody] = useState('');
-//-------------------Update Comments------------------------------------------------
+
+  //-------------------Update comment------------------------------------------------
+
   const handleEdit = (comment) => {
     setEditingCommentId(comment.id);
     setEditingCommentBody(comment.body);
@@ -26,44 +29,49 @@ const Comments = ({
   };
 
   return (
-    <div>
-      <ul>
+    <div className="comments-container">
+      <ul className="comment-list">
         {comments.map((comment) => (
-          <li key={comment.id}>
+          <li key={comment.id} className="comment-item">
             {editingCommentId === comment.id ? (
               <>
                 <input
                   type="text"
                   value={editingCommentBody}
                   onChange={(e) => setEditingCommentBody(e.target.value)}
+                  className="edit-comment-input"
                 />
-                <button onClick={handleUpdate}>Save</button>
-                <button onClick={() => setEditingCommentId(null)}>Cancel</button>
+                <button onClick={handleUpdate} className="comment-button">Save</button>
+                <button onClick={() => setEditingCommentId(null)} className="comment-button">Cancel</button>
               </>
             ) : (
-//------------------- Only allow editing/deleting if active user wrote the post-------          
               <>
-                <p>{comment.body}</p>
-                {userId === postUserId && ( 
-                  <>
-                    <button onClick={() => onDeleteComment(comment.id)}>Delete</button>
-                    <button onClick={() => handleEdit(comment)}>Edit</button>
-                  </>
+                <p className="comment-text">{comment.body}</p>
+                {userId === postUserId && (
+                  <div>
+                    <button onClick={() => onDeleteComment(comment.id)} className="delete-button">
+                      <DeleteIcon className="icon" />
+                    </button>
+                    <button onClick={() => handleEdit(comment)} className="delete-button">
+                      <EditIcon className="icon" />
+                    </button>
+                  </div>
                 )}
               </>
             )}
           </li>
         ))}
       </ul>
-      {}
-      <input 
-//-------------------Add Comments------------------------------------------------------
-        type="text"
-        value={newComment}
-        onChange={(e) => setNewComment(e.target.value)}
-        placeholder="Add a comment"
-      />
-      <button onClick={() => onAddComment(userId)}>Add Comment</button>
+      <div>
+        <input
+          type="text"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="Add a comment"
+          className="comment-input"
+        />
+        <button onClick={() => onAddComment(userId)} className="comment-button">Add Comment</button>
+      </div>
     </div>
   );
 };

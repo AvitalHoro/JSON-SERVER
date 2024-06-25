@@ -631,12 +631,6 @@
       "userId": 1
     },
     {
-      "id": "92b2",
-      "title": "hj",
-      "body": "hj",
-      "userId": "50b3"
-    },
-    {
       "id": "a20c",
       "title": "hi",
       "body": "what?",
@@ -4190,6 +4184,19 @@
       "postId": "ac02",
       "body": "nm",
       "userId": 1
+    },
+    {
+      "id": "7586",
+      "postId": "a20c",
+      "body": "hii"
+    },
+    {
+      "body": "i need help",
+      "id": "7fb1"
+    },
+    {
+      "body": "you very very cute",
+      "id": "da26"
     }
   ],
   "albums": [
@@ -4702,6 +4709,11 @@
       "id": "6ab0",
       "title": "my album",
       "userId": "2096"
+    },
+    {
+      "id": "08fa",
+      "title": "michal",
+      "userId": "50b3"
     }
   ],
   "photos": [
